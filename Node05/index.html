@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Señales de Cuadrantes</title>
+</head>
+<body>
+    <h1>Señales de Cuadrantes</h1>
+    <label for="senialesInput">Ingrese las señales:</label>
+    <input type="text" id="senialesInput">
+    <button onclick="procesarSeniales()">Procesar Señales</button>
+    <div id="resultado"></div>
+
+    <script src="functions.js"></script> 
+    <script>
+        function procesarSeniales() {
+            const seniales = document.getElementById('senialesInput').value;
+
+            fetch('/procesar-seniales', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ seniales })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultadoDiv = document.getElementById('resultado');
+                resultadoDiv.innerHTML = `
+                    <p>Secuencia de Cuadrantes: ${data.secuenciaCuadrantes}</p>
+                    <p>Ciclos Completos: ${data.ciclosCompletos}</p>
+                    <p>Porcentaje de Norte: ${data.porcentajeN}%</p>
+                    <p>Porcentaje de Este: ${data.porcentajeE}%</p>
+                    <p>Porcentaje de Sur: ${data.porcentajeS}%</p>
+                    <p>Porcentaje de Oeste: ${data.porcentajeO}%</p>
+                `;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
